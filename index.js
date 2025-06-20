@@ -3,21 +3,18 @@ let userform = document.getElementById("user_form");
 window.addEventListener("DOMContentLoaded", () => {
     const dobInput = document.getElementById("dob");
     const today = new Date();
-    const minAge = 17;
-    const maxAge = 56;
 
-    const toDateString = (date) => {
-        return date.toISOString().split("T")[0];
-    };
+    const toDateString = (date) => date.toISOString().split("T")[0];
 
-    const maxDate = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
-    const minDate = new Date(today.getFullYear() - maxAge, today.getMonth(), today.getDate());
+    const maxDate = new Date(Date.UTC(today.getFullYear() - 18, today.getMonth(), today.getDate()));
+    const minDate = new Date(Date.UTC(today.getFullYear() - 55, today.getMonth(), today.getDate()));
 
-    dobInput.max = toDateString(maxDate);
-    dobInput.min = toDateString(minDate);
+    dobInput.max = toDateString(maxDate);  // 2007-06-20
+    dobInput.min = toDateString(minDate);  // 1970-06-20
 
     displayEntries();
 });
+
 
 const getAge = (dob) => {
     const dobDate = new Date(dob);
