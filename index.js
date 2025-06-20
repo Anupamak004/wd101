@@ -4,13 +4,18 @@ window.addEventListener("DOMContentLoaded", () => {
     const dobInput = document.getElementById("dob");
     const today = new Date();
 
-    const toDateString = (date) => date.toISOString().split("T")[0];
+    const toDateString = (date) => {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const dd = String(date.getDate()).padStart(2, "0");
+        return `${yyyy}-${mm}-${dd}`;
+    };
 
-    const maxDate = new Date(Date.UTC(today.getFullYear() - 18, today.getMonth(), today.getDate()));
-    const minDate = new Date(Date.UTC(today.getFullYear() - 55, today.getMonth(), today.getDate()));
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
 
-    dobInput.max = toDateString(maxDate);  // 2007-06-20
-    dobInput.min = toDateString(minDate);  // 1970-06-20
+    dobInput.max = toDateString(maxDate);  // → "2007-06-20"
+    dobInput.min = toDateString(minDate);  // → "1970-06-20"
 
     displayEntries();
 });
