@@ -91,7 +91,7 @@ const saveUserForm = (event) => {
     }
 
     const age = getAge(dob);
-    if (age < 18 || age > 55) {
+    if (age <= 18 || age >= 55) {
         alert("Age must be between 18 and 55 years.");
         return;
     }
