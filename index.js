@@ -88,11 +88,13 @@ const saveUserForm = (event) => {
     }
 
     // Age validation
+    // Age validation
     const age = getAge(dob);
     if (age < 18 || age > 55) {
         alert("Age must be between 18 and 55 years.");
-        return false;
+        return; // <-- not "return false;"
     }
+
 
     const entry = { name, email, password, dob, acceptTerms };
 
