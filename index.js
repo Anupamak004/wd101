@@ -16,17 +16,20 @@ window.addEventListener("DOMContentLoaded", () => {
     dobInput.max = toDateString(maxDate);
     dobInput.min = toDateString(minDate);
 
-    displayEntries(); // Load existing entries on page load
+    displayEntries();
 });
 
 const getAge = (dob) => {
+    const dobDate = new Date(dob);
     const today = new Date();
-    const birthDate = new Date(dob);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+    const dayDiff = today.getDate() - dobDate.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
         age--;
     }
+
     return age;
 };
 
@@ -44,12 +47,13 @@ const displayEntries = () => {
     const entries = retrieveEntries();
 
     const tableEntries = entries.map((entry) => {
-        const nameCell = `<td class="border px-4 py-2">${entry.name}</td>`;
-        const emailCell = `<td class="border px-4 py-2">${entry.email}</td>`;
-        const passwordCell = `<td class="border px-4 py-2">${entry.password}</td>`;
-        const dobCell = `<td class="border px-4 py-2">${entry.dob}</td>`;
-        const acceptTermsCell = `<td class="border px-4 py-2">${entry.acceptTerms}</td>`;
-        return `<tr>${nameCell}${emailCell}${passwordCell}${dobCell}${acceptTermsCell}</tr>`;
+        return `<tr>
+            <td class="border px-4 py-2">${entry.name}</td>
+            <td class="border px-4 py-2">${entry.email}</td>
+            <td class="border px-4 py-2">${entry.password}</td>
+            <td class="border px-4 py-2">${entry.dob}</td>
+            <td class="border px-4 py-2">${entry.acceptTerms}</td>
+        </tr>`;
     }).join("\n");
 
     const table = `
@@ -80,30 +84,24 @@ const saveUserForm = (event) => {
     const dob = document.getElementById("dob").value;
     const acceptTerms = document.getElementById("terms").checked;
 
-    // Email validation
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
         alert("Please enter a valid email address.");
-        return false;
+        return;
     }
 
-    // Age validation
-    // Age validation
     const age = getAge(dob);
     if (age < 18 || age > 55) {
         alert("Age must be between 18 and 55 years.");
-        return; // <-- not "return false;"
+        return;
     }
 
-
     const entry = { name, email, password, dob, acceptTerms };
-
     let entries = retrieveEntries();
     entries.push(entry);
     localStorage.setItem("user-entries", JSON.stringify(entries));
-
-    displayEntries(); // Show new entry in table
-    userform.reset(); // Clear the form
+    displayEntries();
+    userform.reset();
 };
 
 userform.addEventListener("submit", saveUserForm);
