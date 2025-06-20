@@ -3,8 +3,8 @@ let userform = document.getElementById("user_form");
 window.addEventListener("DOMContentLoaded", () => {
     const dobInput = document.getElementById("dob");
     const today = new Date();
-    const minAge = 18;
-    const maxAge = 55;
+    const minAge = 17;
+    const maxAge = 56;
 
     const toDateString = (date) => {
         return date.toISOString().split("T")[0];
